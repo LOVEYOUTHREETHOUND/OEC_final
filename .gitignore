@@ -1,0 +1,300 @@
+# ============================================================
+# OEC_final 项目 .gitignore
+# 方向：遥感星座协同计算 / 多星协同推理(MARL联合决策) / DeepLabV3+
+# 栈 ：Python + PyTorch + 强化学习 + 自研仿真平台
+#
+# 设计原则：
+#   * 大体积遥感影像与模型权坚决不入库
+#   * 可复现性所需的小体量代码/配置默认追踪
+#   * 如需对某条忽略规则放行例外，请在对应区段下方手动追加
+#     以 `!` 开头的反向规则并注意「父目录被整体忽略时子项无法放行」的限制
+# ============================================================
+
+
+# ---------------- 常规操作系统垃圾 ----------------
+.DS_Store
+.DS_Store?
+._*
+.AppleDouble
+.LSOverride
+Icon
+.Spotlight-V100
+.Trashes
+.fseventsd
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+
+# ---------------- IDE / 编辑器 ---------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.netrwhist
+.tags
+.tags1
+.project
+.pydevproject
+.settings/
+
+
+# ---------------- Python 编译产物 ------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+wheels/
+*.egg
+*.egg-info/
+.eggs/
+sdist/
+develop-eggs/
+installed.cfg
+
+
+# ---------------- 虚拟环境 -------------------------
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+conda_env/
+.python-version
+
+
+# ---- 包管理 lock 文件策略说明 ----
+# 默认不强制忽略任何 lock 文件以便复现；以下注释行可按团队约定打开：
+# Pipfile.lock
+# poetry.lock
+# uv.lock
+# pdm.lock
+
+
+# ---------------- 测试 / Lint / 类型缓存 -------------
+.pytest_cache/
+.tox/
+.nox/
+.ninja_deps
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.dmypy.json
+dmypy.json
+.ipynb_checkpoints/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*,cover
+nosetests.xml
+xunit-py.*.xml
+.hypothesis/
+
+
+# ---------------- Jupyter Notebook -------------------
+.ipynb_checkpoints/
+*/.ipynb_checkbooks/*
+# 一般而言 notebook 应纳入版本控制以记录探索过程；
+# 若有大量草稿式 notebook 不想跟踪，可在下面自行列举：
+# scratch_*.ipynb
+# playground_*.ipynb
+
+
+# ================= 深度学习相关 =====================
+# ----- 模型权重 / checkpoint -----
+*.pt
+*.pth
+*.pth.tar
+*.ckpt
+*.safetensors
+*.bin
+*.gguf
+*.onnx
+*.engine           # TensorRT engine
+*.plan             # TensorRT plan
+*.param[s]         # MXNet params
+*.mar              # TorchServe archive
+weights/
+ckpts/
+ckpts.*/
+checkpoints/
+checkpoint-*/
+pretrained/
+backbone_weights/
+saved_models/
+wandb/run-*/files/   # 兜底(wandb 目录已在下文整目录忽略)
+
+# ----- 训练状态 / optimizer states / LR scheduler dumps ---
+optimizers/
+opt_states/
+scheduler_states/
+epoch_state.pt       # 已被上面 *.pt 覆盖，列此仅为提示
+
+
+# ======== 遥感数据集与大数组中间产物(GB级)=========
+# 注意：下列任意一项都极易超出 GitHub 单文件大小限制，
+# 必须排除。如有必要提交极小的示例切片(<10MB)，请新建独立
+# sample_assets/ 目录并在其内放置后再于末尾加 `!` 反向规则。
+data/
+datasets/
+dataset/
+raw_data/
+raw_images/
+raw_tiles/
+processed_data/
+intermediate/
+features_cache/
+patches/
+samples_subset/
+images/
+imgs/
+gt/
+labels_y/
+pred_masks/
+
+# 卫星原始/标准格式
+*.tif
+*.tiff
+*.geotiff
+*.img
+*.hdr
+*.bil
+*.bip
+*.bsq
+*.sid
+*.ecw
+*.jp2
+*.kmz
+*.kml
+*.shp                # shapefile 主文件及其伴随同名后缀一并被以下覆盖
+*.dbf
+*.prj
+*.shx
+*.qpj
+*.cpg
+
+# 科学计算大数组容器
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.he5
+*.nc
+*.nc4
+*.zarr
+*.zarr.zip
+*.parquet
+*.feather
+*.arrow
+*.pkl
+*.pickle
+*.joblib
+
+# zip 类打包的训练快照(避免误传整个 experiments 导出)
+exports/
+exported_runs/
+snapshots/
+
+
+# ============== 实验产出物 / 日志 / 可视化 ============
+runs/
+run_results/
+results/
+results_backup/
+outputs/
+output/
+out/
+logs/
+log/
+tb_logs/
+tensorboard/
+tf_logs/
+mlruns/
+mlartifacts/
+aim_repo/
+neptune/
+clearml.conf        # ClearML SDK 凭据配置
+wandb/
+.wandb/
+events.out.tfevents.*
+*.log
+*.stdout
+*.stderr
+summaries/
+summaries.csv      # 由 trainer 自动 dump 的逐 epoch 表格(建议改为 json 入库时可删此处)
+metrics_raw/
+
+# 图像类结果(png/jpg/pdf 在论文 figure 流程中往往希望入库,
+# 此处仅自动屏蔽明显属于批量推理输出的路径前缀;
+# 手工绘制的最终图请放在 figs_final/ 或 paper/assets/ 下即可随仓库走)
+predictions/
+vis_results/
+debug_vis/
+overlay_outputs/
+inference_out/
+
+
+# -------------------- 敏感信息 ----------------------
+.env
+.env.*
+!.env.example
+secrets.yaml
+secrets.yml
+config/local_settings.py
+credentials.json
+service_account.json
+gcp_key.json
+aws_credentials
+*_private.*
+*_secret.*
+
+
+# ----------- 仿真平台运行期临时资源 ----------------
+tmp/
+.tmp/
+scratch/
+scratchpad/
+cache/
+.cachedir/
+local_cache/
+isplink_lock         # ISPLink 运行态占位(若有)
+*.pid
+*.socket
+*.sock
+coredump
+*.heapdump
+*.prof               # 性能剖析二进制(cProfile 输出文本则允许)
+
+
+# --------- LaTeX / 论文写作编译副产物 ---------------
+## 如果后续在仓内写论文(.tex), 这些是构建残留应忽略 ##
+**/_minted-*/
+*.aux
+*.bcf
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.lol
+*.nav
+*.snm
+*.synctex.gz
+*.toc
+*.out
+*.idx
+*.ilg
+*.ind
+*.xdv
+*.dvi
+*.ps
+*.run.xml
+*-blx.aux
